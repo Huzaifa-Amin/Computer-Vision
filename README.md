@@ -14,8 +14,8 @@ The second script generates a white diamond shape centered at (250, 250) with a 
 
 ## Files
 
-1. `BIT-21232 -Task-1.m` – Generates a white circle on a black canvas.
-2. `BIT-21232 -Task-2.m` – Generates a white diamond on a black canvas.
+1. `BIT-21232 - Task-1.m` – Generates a white circle on a black canvas.
+2. `BIT-21232 - Task-2.m` – Generates a white diamond on a black canvas.
 
 ## License
 
