@@ -74,6 +74,7 @@ imshow(background);
 ### Exercise 1: Intensity Transformations
 #### Negative Transformation
 ```matlab
+% Intensity Transformation - Negative Image
 f = imread('Picture1.png');
 g = imcomplement(f);
 imshow(f);
@@ -83,6 +84,7 @@ imshow(g);
 
 #### Power Law (Gamma Correction)
 ```matlab
+% Intensity Transformation - Power Law (Gamma)
 f = imread('Picture1.png');
 g = imadjust(f, [], [], 0.5);
 imshow(f);
@@ -92,6 +94,7 @@ imshow(g);
 
 #### Contrast Stretching
 ```matlab
+% Intensity Transformation - Contrast Stretching
 f = imread('seeds.png');
 fd = im2double(f);
 m = mean2(fd);
@@ -103,6 +106,7 @@ imshow(g);
 
 #### Logarithmic Transformation
 ```matlab
+% Intensity Transformation - Logarithmic
 f = imread('light.png');
 g = im2uint8(mat2gray(log(1+double(f))));
 imshow(f);
@@ -177,78 +181,46 @@ imshow(enhanced_img);
 ---
 
 ### Exercise 3: Detecting Partially Filled Bottles
-This script labels only incompletely filled bottles in an image.
-
 ```matlab
-clc;
-clear;
-close all;
-
-% Read the image
-[file, path] = uigetfile({'*.*'}, 'Select an Image File');
-if isequal(file, 0)
-    disp('User canceled file selection.');
-    return;
-end
-img = imread(fullfile(path, file));
-
-% Convert to grayscale
-gray_img = rgb2gray(img);
-
-% Apply edge detection
-edges = edge(gray_img, 'Canny');
-
-% Detect circular objects using Hough Transform
-[centers, radii] = imfindcircles(gray_img, [20 100], 'ObjectPolarity', 'dark', 'Sensitivity', 0.9);
-
-% Convert to binary for segmentation
-bw = imbinarize(gray_img, 'adaptive');
-
-% Morphological operations
-bw = imclose(bw, strel('disk', 5));
-bw = imfill(bw, 'holes');
-
-% Label connected components
-props = regionprops(bw, 'BoundingBox', 'Area');
-
-figure, imshow(img);
-hold on;
-
-for i = 1:length(props)
-    bbox = props(i).BoundingBox;
-    subImage = imcrop(gray_img, bbox);
-    profile = mean(subImage, 2);
-    [~, liquidLevel] = min(profile);
-    if liquidLevel < 0.7 * size(subImage, 1)
-        rectangle('Position', bbox, 'EdgeColor', 'r', 'LineWidth', 2);
-        text(bbox(1), bbox(2) - 10, 'Partially Filled', 'Color', 'red', 'FontSize', 12);
-    end
-end
-hold off;
+% Script to detect partially filled bottles
 ```
 
 ---
 
 ### Additional Exercises
-#### Nonlinear Spatial Filtering (Median Filter)
+#### Nonlinear Spatial Filtering - Median Filter
 ```matlab
+% Nonlinear Spatial Filtering - Example
 f = imread('cktboard.png');
 fn = imnoise(f, 'salt & pepper', 0.2);
-gm = medfilt2(fn, [3 3]);
-imshow(gm);
+
+% Convert to grayscale if the image is RGB
+if size(fn, 3) == 3
+    fn_gray = rgb2gray(fn);
+else
+    fn_gray = fn;
+end
+
+gm = medfilt2(fn_gray, [3 3]);
+gms = medfilt2(fn_gray, [3 3], 'symmetric');
+
+% Display results
+figure, imshow(f), title('Original Image');
+figure, imshow(fn), title('Noisy Image');
+figure, imshow(gm), title('Median Filtered Image');
+figure, imshow(gms), title('Symmetric Padded Image');
 ```
 
 #### Otsu Thresholding
 ```matlab
+% Thresholding using Otsu Method: Example
 I = imread('COINS.png');
+imhist(I);
 level = graythresh(I);
-BW = im2bw(I,level);
+BW = im2bw(I, level);
 imshow(BW);
 ```
-
----
 
 ## License
 
 This project is open-source and available under the MIT License. See the [LICENSE](LICENSE) file for more information.
-
