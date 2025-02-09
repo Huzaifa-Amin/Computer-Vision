@@ -1,6 +1,5 @@
 # Computer Vision - MATLAB
 
----
 
 ## **Student Details**
 **Name:** **Huzaifa Amin**  
