@@ -1,9 +1,14 @@
 # Computer Vision - MATLAB
 
-**Name:** [Huzaifa Amin]  
-**Roll No:** [BIT-21232]  
-**Department:** [Information Technology]  
-**Section:** [Evening]  
+---
+
+## **Student Details**
+**Name:** **Huzaifa Amin**  
+**Roll No:** **BIT-21232**  
+**Department:** **Information Technology**  
+**Section:** **Evening**   
+
+---
 
 This repository contains various MATLAB scripts demonstrating image processing techniques, including shape generation, intensity transformations, spatial filtering, and thresholding.
 
