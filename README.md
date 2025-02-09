@@ -15,27 +15,31 @@ This repository contains various MATLAB scripts demonstrating image processing t
 ## Tasks
 
 ### Task 1: Circle Creation
-This script generates a white circle centered at `(128, 128)` with a radius of `50` pixels on a `256x256` black background.
+This script generates a white circle centered at (250, 250) with a radius of 100 pixels on a black background.
 
 **File:** `Task-1.m`
 
 ```matlab
+% Define the size of the image
+imageSize = [500, 500]; % 500x500 pixels
+
 % Create a black background
-image = zeros(256, 256);
+image = zeros(imageSize);
 
-% Define center and radius
-center = [128, 128];
-radius = 50;
+% Define the circle parameters
+center = [250, 250]; % Center of the circle
+radius = 100; % Radius of the circle
 
-[x, y] = meshgrid(1:size(image, 2), 1:size(image, 1));
+% Create a grid of coordinates
+[x, y] = meshgrid(1:imageSize(2), 1:imageSize(1));
 
-% Compute the distance and create a circle
-dist = sqrt((x - center(1)).^2 + (y - center(2)).^2);
-disk = (dist <= radius);
+% Calculate the distance from each pixel to the circle center
+distanceFromCenter = sqrt((x - center(1)).^2 + (y - center(2)).^2);
 
-% Assign white pixels to the circle
-image(disk) = 1;
+% Create the circle by setting pixels within the radius to white (1)
+image(distanceFromCenter <= radius) = 1;
 
+% Display the image
 imshow(image);
 ```
 
