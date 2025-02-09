@@ -181,8 +181,53 @@ imshow(enhanced_img);
 ---
 
 ### Exercise 3: Detecting Partially Filled Bottles
+This script labels only incompletely filled bottles in an image.
 ```matlab
-% Script to detect partially filled bottles
+clc;
+clear;
+close all;
+
+% Read the image
+[file, path] = uigetfile({'*.*'}, 'Select an Image File');
+if isequal(file, 0)
+    disp('User canceled file selection.');
+    return;
+end
+img = imread(fullfile(path, file));
+
+% Convert to grayscale
+gray_img = rgb2gray(img);
+
+% Apply edge detection
+edges = edge(gray_img, 'Canny');
+
+% Detect circular objects using Hough Transform
+[centers, radii] = imfindcircles(gray_img, [20 100], 'ObjectPolarity', 'dark', 'Sensitivity', 0.9);
+
+% Convert to binary for segmentation
+bw = imbinarize(gray_img, 'adaptive');
+
+% Morphological operations
+bw = imclose(bw, strel('disk', 5));
+bw = imfill(bw, 'holes');
+
+% Label connected components
+props = regionprops(bw, 'BoundingBox', 'Area');
+
+figure, imshow(img);
+hold on;
+
+for i = 1:length(props)
+    bbox = props(i).BoundingBox;
+    subImage = imcrop(gray_img, bbox);
+    profile = mean(subImage, 2);
+    [~, liquidLevel] = min(profile);
+    if liquidLevel < 0.7 * size(subImage, 1)
+        rectangle('Position', bbox, 'EdgeColor', 'r', 'LineWidth', 2);
+        text(bbox(1), bbox(2) - 10, 'Partially Filled', 'Color', 'red', 'FontSize', 12);
+    end
+end
+hold off;
 ```
 
 ---
